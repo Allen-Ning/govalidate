@@ -43,22 +43,19 @@ func main() {
 		&check.GoChecker{},   // checks go and go version
 		&check.PathChecker{}, // checks $GOPATH/bin is in $PATH
 	}
-	for _, c := range checks {
-		exit += runCheck(false, c)
-	}
+
 	// Optional checks.
-	var optionals []checker
 	if !ignoreCGO {
-		optionals = append(optionals, &check.CGOChecker{})
+		checks = append(checks, &check.CGOChecker{})
 	}
 	if !ignoreEditors {
 		// TODO(jbd): Add Goland.
-		optionals = append(optionals,
+		checks = append(checks,
 			&check.VimChecker{},
 			&check.VSCodeChecker{},
 		)
 	}
-	for _, c := range optionals {
+	for _, c := range checks {
 		exit += runCheck(true, c)
 	}
 
